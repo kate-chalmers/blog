@@ -1,2 +1,61 @@
 /* css styles */
 
+@import url('//fonts.googleapis.com/css?family=Roboto+Condensed:400,700');
+
+
+* {
+  box-sizing: border-box;
+  font-family: Avenir;
+  margin: 0px;
+}
+
+.text {
+  padding: 10px;
+  border: 1px solid black;
+  background: white;
+  width: 90%;
+  margin: 0;
+}
+
+.col1 {
+    background: repeating-linear-gradient(
+    to right,
+    #f6ba52,
+    #f6ba52 10px,
+    #ffd180 10px,
+    #ffd180 20px
+  );
+  border-left: solid;
+  border-top: solid;
+  border-bottom: solid;
+
+}
+
+.col2 {
+  width:25%;
+  height:100vh;
+  float:left;
+  background-color:white;
+  border-left: solid;
+  border-bottom: solid;
+
+}
+
+.zoom {
+  transition: transform .2s; /* Animation */
+  width: 180px;
+  height: 180px;
+  margin: 0 auto;
+}
+
+.zoom:hover {
+  transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+.center {
+  margin-top: 10px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
