@@ -1,41 +1,21 @@
----
-title: "Post #1: Blog Post (Taylor's Version)"
-date: "2023-06-25"
-image: "image.jpg"
-execute:
-  message: false
-  warning: false
----
+<html>
 
-<style>
+<head>
+<title>Title</title>
+</head>
 
-#title-block-header {
-  margin-block-end: 1rem;
-  position: relative;
-  margin-top: -1px;
-  background: #f6ba52
-}
+<body>
 
-#quarto-header > nav {
-  background: #ffd180 !important;
-}
+<p>This is an R HTML document. When you click the <b>Knit HTML</b> button a web page will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
 
-.quarto-title-banner {
-  margin-block-end: 1rem;
-  position: relative;
-  background: #ffd180
-}
-
-</style>
-
-```{r}
+<!--begin.rcode
 library(tidyverse)
 library(spotifyr)
 library(ggridges)
 library(RColorBrewer)
 
 # Stored API code in config folder and added to gitignore file
-source("./config.R")
+source("~/OneDrive/R4DEV/config.R")
 
 # Access API username + id
 Sys.setenv(SPOTIFY_CLIENT_ID = spotify_id)
@@ -44,15 +24,15 @@ Sys.setenv(SPOTIFY_CLIENT_SECRET = spotify_code)
 spotify_access_token <- get_spotify_access_token()
 
 spotify_id <- function(artist_name) {
-  
+
   # Removed print so there is no echo in Quarto doc
   artist_id <- search_spotify(artist_name, type = "artist") %>%
     select(id) %>%
     slice(1) %>%
     as.character()
-  
+
   return(artist_id)
-   
+
 }
 
 tswift_id <- spotify_id("Taylor Swift")
@@ -67,7 +47,7 @@ tswift_spotify <- spotifyr::get_artist_audio_features(
 # Filter for Taylor's Version + Originals
 taylors_version <- tswift_spotify %>%
   filter(grepl("Taylor's Version", album_name) | grepl("Red", album_name) | grepl("Fearless", album_name)) %>%
-  filter(!grepl("International", album_name)) 
+  filter(!grepl("International", album_name))
 
 
 # Added some factoring and text decoration
@@ -85,11 +65,11 @@ taylors_version |>
          x=NULL)+
     facet_wrap(~metric, scales = "free_x", nrow = 2,
                labeller = as_labeller(
-                 c(`danceability`="Danceability", 
+                 c(`danceability`="Danceability",
                    `energy` = "Energy",
-                   `acousticness` = "Acousticness", 
+                   `acousticness` = "Acousticness",
                    `speechiness` = "Speechiness",
-                   `tempo` = "Tempo", 
+                   `tempo` = "Tempo",
                    `valence` = "Valence")
                ))+
     rcartocolor::scale_fill_carto_d(palette="Temps") +
@@ -97,4 +77,8 @@ taylors_version |>
         text = element_text(family="Avenir Next"),
         axis.text.y=ggtext::element_markdown())
 
-```
+end.rcode-->
+
+
+</body>
+</html>

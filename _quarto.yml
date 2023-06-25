@@ -2,10 +2,10 @@ project:
   type: website
 
 website:
-  title: "R4DEV"
+  title: "Kate Chalmers"
   navbar:
+    logo-href: https://kate-chalmers.com/
     right:
-      - about.qmd
       - icon: github
         href: https://github.com/kate-chalmers/
       - icon: twitter
