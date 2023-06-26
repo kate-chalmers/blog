@@ -71,10 +71,13 @@ taylors_version <- tswift_spotify %>%
   filter(!grepl("From The Vault", track_name))
 
 # Exploring speechiness outlier
-tv_dat <- taylors_version %>%
+tv_annote <- taylors_version %>%
   filter(grepl("Red", album_name)) %>%
-  select(track_name, speechiness) %>%
-  arrange(-speechiness)
+  select(album_name, track_name, value = speechiness) %>%
+  arrange(-value) %>%
+  mutate(metric = "speechiness",
+         album_name = paste0("<b>", album_name, "</b>")) %>%
+  slice_head(n=1)
 
 # Added some factoring and text decoration
 taylors_version |>
@@ -89,7 +92,8 @@ taylors_version |>
          subtitle = "Based on Spotify's Web API with spotifyr",
          y=NULL,
          x=NULL)+
-    facet_wrap(~metric, scales = "free_x", nrow = 2,
+  geom_text(data=tv_annote, label="We Are Never Ever \nGetting Back Together", vjust=-0.5, hjust=0.8, family="Avenir", size=1.5) +
+  facet_wrap(~metric, scales = "free_x", nrow = 2,
                labeller = as_labeller(
                  c(`danceability`="Danceability", 
                    `energy` = "Energy",
@@ -98,8 +102,9 @@ taylors_version |>
                    `tempo` = "Tempo", 
                    `valence` = "Valence")
                ))+
-    rcartocolor::scale_fill_carto_d(palette="Temps") +
+  rcartocolor::scale_fill_carto_d(palette="Temps") +
   theme(plot.title.position =  "plot",
+        axis.text.x = element_text(angle=45),
         text = element_text(family="Avenir Next"),
         axis.text.y=ggtext::element_markdown())
 
