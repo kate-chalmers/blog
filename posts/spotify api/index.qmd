@@ -67,8 +67,14 @@ tswift_spotify <- spotifyr::get_artist_audio_features(
 # Filter for Taylor's Version + Originals
 taylors_version <- tswift_spotify %>%
   filter(grepl("Taylor's Version", album_name) | grepl("Red", album_name) | grepl("Fearless", album_name)) %>%
-  filter(!grepl("International", album_name)) 
+  filter(!grepl("International", album_name)) %>%
+  filter(!grepl("From The Vault", track_name))
 
+# Exploring speechiness outlier
+tv_dat <- taylors_version %>%
+  filter(grepl("Red", album_name)) %>%
+  select(track_name, speechiness) %>%
+  arrange(-speechiness)
 
 # Added some factoring and text decoration
 taylors_version |>
