@@ -29,12 +29,16 @@ execute:
 </style>
 
 ```{r}
+#| fig-width: 12
+#| fig-height: 10
+
 library(tidyverse)
 library(spotifyr)
 library(ggridges)
 library(RColorBrewer)
 
 # Stored API code in config folder and added to gitignore file
+# source("./posts/spotify api/config.R")
 source("./config.R")
 
 # Access API username + id
@@ -66,9 +70,8 @@ tswift_spotify <- spotifyr::get_artist_audio_features(
 
 # Filter for Taylor's Version + Originals
 taylors_version <- tswift_spotify %>%
-  filter(grepl("Taylor's Version", album_name) | grepl("Red", album_name) | grepl("Fearless", album_name)) %>%
-  filter(!grepl("International", album_name)) %>%
-  filter(!grepl("From The Vault", track_name))
+  filter(grepl("Taylor's Version", album_name) | grepl("Red", album_name) | grepl("Fearless", album_name) | grepl("Speak Now", album_name)) %>%
+  filter(!grepl("International", album_name), !grepl("From The Vault", track_name), !grepl("Live", album_name), !album_name == "Speak Now")
 
 # Exploring speechiness outlier
 tv_annote <- taylors_version %>%
@@ -82,7 +85,9 @@ tv_annote <- taylors_version %>%
 # Added some factoring and text decoration
 taylors_version |>
   mutate(album_name = ifelse(grepl("Taylor's Version", album_name), paste0("<b>", album_name, "</b>"), album_name),
-         album_name = factor(album_name, c("Red (Deluxe Edition)", "<b>Red (Taylor's Version)</b>", "Fearless (Platinum Edition)", "<b>Fearless (Taylor's Version)</b>"))
+         album_name = factor(album_name, rev(c("Fearless (Platinum Edition)", "<b>Fearless (Taylor's Version)</b>",
+                                           "Speak Now (Deluxe Package)", "<b>Speak Now (Taylor's Version)</b>",
+                                           "Red (Deluxe Edition)", "<b>Red (Taylor's Version)</b>")))
   ) %>%
   tidyr::pivot_longer(cols = c("valence","tempo","danceability","energy", "speechiness", "acousticness"), names_to = "metric") |>
   ggplot(aes(x = value, y = album_name, fill=factor(metric))) +
